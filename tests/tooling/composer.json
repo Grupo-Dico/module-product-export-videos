@@ -1,0 +1,59 @@
+{
+  "name": "leancommerce/project-tooling",
+  "description": "Herramientas aisladas de calidad; no forman parte del paquete ni requieren Magento instalado.",
+  "type": "project",
+  "license": "proprietary",
+  "require": {
+    "php": "~8.3.0 || ~8.4.0 || ~8.5.0"
+  },
+  "require-dev": {
+    "magento/magento-coding-standard": "^41",
+    "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^11.5",
+    "psr/log": "^3.0"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "scripts": {
+    "check": [
+      "@cs",
+      "@stan",
+      "@standard",
+      "@unit",
+      "@package"
+    ],
+    "release": [
+      "@check",
+      "python3 -B standard-check.py --root ../.. --release",
+      "python3 -B package-check.py --root ../.. --ref HEAD"
+    ],
+    "bundle": [
+      "@release",
+      "python3 -B bundle.py --root ../.."
+    ],
+    "cs": "phpcs --standard=../../phpcs.xml.dist",
+    "cs-fix": "phpcbf --standard=../../phpcs.xml.dist",
+    "stan": "if [ -f ../../phpstan.neon.dist ]; then phpstan analyse --configuration=../../phpstan.neon.dist --no-progress; else echo 'PHPStan: sin phpstan.neon.dist, omitido'; fi",
+    "standard": "python3 -B standard-check.py --root ../..",
+    "unit": "phpunit --configuration=../../phpunit.xml.dist",
+    "package": [
+      "@composer validate --strict --working-dir=../..",
+      "python3 package-check.py --root ../.."
+    ]
+  },
+  "scripts-descriptions": {
+    "check": "Condición de cierre de tarea: formato, análisis, estándar LeanCommerce, pruebas unitarias y paquete.",
+    "release": "Condición de versión (nivel 2): check + árbol limpio + commit exacto + entregables mínimos y tag coherente.",
+    "bundle": "Entrega versionada en dist/: paquete, documentación pública y manifiesto con SHA-256 (requiere release en verde).",
+    "cs": "Estándar de código (Magento2).",
+    "cs-fix": "Corrige formato automáticamente. Commit separado de cambios funcionales.",
+    "stan": "Análisis estático, sólo si existe phpstan.neon.dist.",
+    "standard": "Nombres, arquitectura (Domain/ sin Magento) y seguridad mínima del módulo.",
+    "unit": "Pruebas unitarias sin Magento.",
+    "package": "Valida composer.json y el contenido real de la distribución candidata (árbol de trabajo)."
+  }
+}

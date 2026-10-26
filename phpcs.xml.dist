@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ruleset name="LeanCommerce Magento">
+    <description>Estándar Magento2. Los errores fallan el check; las advertencias se reportan sin bloquear.</description>
+    <rule ref="Magento2"/>
+
+    <!-- Ajusta las rutas del código del proyecto (src, packages, app/code/Vendor, ...). -->
+    <file>src</file>
+
+    <arg name="extensions" value="php,phtml"/>
+    <arg value="sp"/>
+    <config name="ignore_warnings_on_exit" value="1"/>
+</ruleset>

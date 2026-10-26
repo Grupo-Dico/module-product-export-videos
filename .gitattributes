@@ -1,0 +1,19 @@
+# Excluidos de la distribución (git archive / Composer dist).
+/tests export-ignore
+/internal export-ignore
+/dev export-ignore
+/docs export-ignore
+/tools export-ignore
+/.github export-ignore
+/.engineering-standards export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.git-blame-ignore-revs export-ignore
+/AGENTS.md export-ignore
+/CLAUDE.md export-ignore
+/phpcs.xml.dist export-ignore
+/phpstan.neon.dist export-ignore
+/phpunit.xml.dist export-ignore
+/SOURCE-SHA256.txt export-ignore
+
+*.csv text eol=lf

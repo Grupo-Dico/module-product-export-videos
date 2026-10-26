@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="LeanCommerce\ProductVideoExport\Api\VideoReaderInterface"
+                type="LeanCommerce\ProductVideoExport\Model\ResourceModel\BatchVideoReader"/>
+    <type name="LeanCommerce\ProductVideoExport\Model\ExportExecutionContext" shared="false"/>
+    <type name="LeanCommerce\ProductVideoExport\Model\ScopedExportLogger" shared="false"/>
+    <type name="Magento\ImportExport\Model\Export">
+        <arguments>
+            <argument name="exportAdapterFac" xsi:type="object">LeanCommerce\ProductVideoExport\Model\ScopedAdapterFactory</argument>
+        </arguments>
+        <plugin name="lc_product_video_export_cleanup"
+                type="LeanCommerce\ProductVideoExport\Plugin\ExportCleanupPlugin"/>
+    </type>
+    <type name="Magento\ImportExport\Model\Export\Consumer">
+        <plugin name="lc_product_video_export_consumer_cleanup"
+                type="LeanCommerce\ProductVideoExport\Plugin\ConsumerCleanupPlugin"/>
+    </type>
+    <type name="LeanCommerce\ProductVideoExport\Model\ProductExport">
+        <arguments>
+            <argument name="logger" xsi:type="object">LeanCommerce\ProductVideoExport\Model\ScopedExportLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\CatalogImportExport\Model\Export\EntityFiltersProvider">
+        <arguments>
+            <argument name="additionalFilters" xsi:type="array">
+                <item name="lc_product_video_export_presence" xsi:type="array">
+                    <item name="attribute_code" xsi:type="string">lc_product_video_export_presence</item>
+                    <item name="default_frontend_label" xsi:type="string">Video presence</item>
+                    <item name="backend_type" xsi:type="string">varchar</item>
+                    <item name="frontend_input" xsi:type="string">select</item>
+                    <item name="source_model" xsi:type="string">LeanCommerce\ProductVideoExport\Model\Source\VideoPresenceOptions</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

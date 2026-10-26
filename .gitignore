@@ -1,0 +1,36 @@
+# Dependencias y salidas locales
+/dist/
+/tests/tooling/vendor/
+/tests/tooling/.phpunit.cache/
+/vendor/
+/node_modules/
+__pycache__/
+*.pyc
+
+# Evidencias, snapshots y documentación privada
+/internal/
+/tmp/
+/private/
+/.engineering-standards/
+/AGENTS.md
+/CLAUDE.md
+/var/
+/generated/
+
+# Configuración privada, datos y claves
+.env
+.env.*
+auth.json
+env.php
+*.sql
+*.sql.gz
+*.log
+*.pem
+*.key
+*.p12
+
+# Sistema y editores
+.DS_Store
+._*
+.idea/
+.vscode/

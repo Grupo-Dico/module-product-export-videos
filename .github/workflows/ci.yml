@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Calidad PHP 8.3
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verificar lock de herramientas
+        run: |
+          test -f tests/tooling/composer.lock
+          ./dev/tooling.sh --working-dir=tests/tooling validate --strict
+      - name: Instalar herramientas desde el lock
+        run: ./dev/tooling.sh --working-dir=tests/tooling install --no-interaction --prefer-dist --no-progress
+      - name: Verificar el candidato del proyecto
+        run: ./dev/tooling.sh --working-dir=tests/tooling check
+      - name: Verificar guardas del runner sin Magento
+        run: ./dev/tooling.sh --working-dir=tests/tooling exec -- python3 -B ../integration/runner_test.py
+      - name: Verificar entregables de versión
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: ./dev/tooling.sh --working-dir=tests/tooling release
